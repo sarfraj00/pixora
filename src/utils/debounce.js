@@ -1,0 +1,19 @@
+
+export const debounce = (func, delay) => {
+    let timer;
+
+    const debounced = (...args) => {
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+            func(...args);
+        }, delay);
+    };
+
+    debounced.cancel = () => {
+        clearTimeout(timer);
+        timer = null;
+    };
+
+    return debounced;
+};

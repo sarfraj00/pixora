@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&display=swap');
+
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes float-photo-1 {
+  0%,
+  100% {
+    transform: rotate(7deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(7deg) translateY(-14px);
+  }
+}
+
+@keyframes float-photo-2 {
+  0%,
+  100% {
+    transform: rotate(13deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(13deg) translateY(12px);
+  }
+}
+
+@keyframes float-photo-3 {
+  0%,
+  100% {
+    transform: rotate(-8deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(-8deg) translateY(-10px);
+  }
+}
+
+@keyframes float-photo-4 {
+  0%,
+  100% {
+    transform: rotate(12deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(12deg) translateY(12px);
+  }
+}
+
+@keyframes float-photo-5 {
+  0%,
+  100% {
+    transform: rotate(-5deg) translateY(0);
+  }
+
+  50% {
+    transform: rotate(-5deg) translateY(-12px);
+  }
+}
+
+.animate-photo-1 {
+  animation: float-photo-1 6s ease-in-out infinite;
+}
+
+.animate-photo-2 {
+  animation: float-photo-2 7s ease-in-out infinite;
+}
+
+.animate-photo-3 {
+  animation: float-photo-3 7s ease-in-out infinite;
+}
+
+.animate-photo-4 {
+  animation: float-photo-4 6s ease-in-out infinite;
+}
+
+.animate-photo-5 {
+  animation: float-photo-5 8s ease-in-out infinite;
+}
