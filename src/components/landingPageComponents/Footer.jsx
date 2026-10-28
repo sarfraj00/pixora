@@ -1,5 +1,5 @@
-import LanguageSelector from "./LanguageSelector";
-import ThemeToggle from "./ThemeToggle";
+
+import {NavLink} from 'react-router-dom'
 
 const Footer = ({ dark, setDark }) => {
   return (
@@ -21,31 +21,24 @@ const Footer = ({ dark, setDark }) => {
       <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
         <span>© 2026 Pixora</span>
 
-        <button className="transition hover:text-white">
+        <NavLink className="transition hover:text-white" to="/about">
           About
-        </button>
+        </NavLink>
 
-        <button className="transition hover:text-white">
+        <NavLink className="transition hover:text-white" to="/privacy-policy">
           Privacy
-        </button>
+        </NavLink>
 
-        <button className="transition hover:text-white">
+        <NavLink className="transition hover:text-white" to="/terms">
           Terms
-        </button>
+        </NavLink>
 
-        <button className="transition hover:text-white">
+        <NavLink className="transition hover:text-white" to={'/help'}>
           Help
-        </button>
+        </NavLink>
       </div>
 
-      <div className="flex items-center gap-5">
-        <LanguageSelector />
-
-        <ThemeToggle
-          dark={dark}
-          setDark={setDark}
-        />
-      </div>
+  
     </footer>
   );
 };

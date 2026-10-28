@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import RegisterNavbar from "../components/register/RegisterNavbar";
 import RegisterHero from "../components/register/RegisterHero";
 import RegisterFormCard from "../components/register/RegisterFormCard";
-import RegisterFooter from "../components/register/RegisterFooter";
+
 import bgImage from '../assets/images/pixora_landing_bg.png'
 import { useNavigate } from "react-router-dom";
+import Footer from "../components/landingPageComponents/Footer";
 
 
 const RegisterPage = () => {
@@ -136,7 +137,7 @@ const RegisterPage = () => {
 
 
 
-      <RegisterFooter />
+      <Footer />
 
 
 

@@ -1,6 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { lazy, Suspense } from 'react';
 import PixoraLoader from './utils/Loader.jsx';
+const About = lazy(()=>import('./pages/About.jsx'));
+const TermsOfService = lazy(()=>import('./pages/TermsOfService.jsx'));
+const Help = lazy(()=>import('./pages/Help.jsx'));
+const PrivacyPolicy = lazy(()=>import('./pages/PrivacyPolicy.jsx'));
+
 const ShowPostPage = lazy(() => import('./pages/ShowPostPage.jsx'));
 const Home = lazy(() => import('./pages/Home.jsx'))
 const OtpVerification = lazy(() => import('./components/forgotPassword/OTPVerification.jsx'));
@@ -28,6 +33,10 @@ const router = createBrowserRouter([{
     { path: '/settings', element: <Setting /> },
     { path: '/home', element: <Home /> },
     { path: '/saved', element: <SavedPosts /> },
+    { path: '/about', element: <About /> },
+    { path: '/terms', element: <TermsOfService /> },
+    { path: '/help', element: <Help /> },
+    { path: '/privacy-policy', element: <PrivacyPolicy /> },
     { path: '/user/:username', element: < UserProfile /> },
   ]
 },
