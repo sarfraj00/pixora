@@ -85,7 +85,7 @@ export default function TermsOfService() {
           For any enquiries, privacy questions, or requests, please
           contact us at{" "}
           <a
-            href="mailto:support@pixxora.com"
+            href="mailto:pixxxora@gmail.com"
             className="font-semibold text-violet-600 hover:text-violet-700 hover:underline"
           >
             pixxxora@gmail.com
