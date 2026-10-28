@@ -1,5 +1,6 @@
 
 import { Camera, Heart, Compass, Users } from "lucide-react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const values = [
@@ -24,6 +25,11 @@ const values = [
 ];
 
 export default function About() {
+
+  useEffect(()=>{
+    window.scrollTo({top:'0px',behavior:'smooth'})
+  })
+
   return (
     <main className="min-h-screen bg-white">
       <section className="bg-linear-to-br from-violet-50 via-white to-pink-50 px-5 py-20 sm:py-28">

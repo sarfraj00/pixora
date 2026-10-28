@@ -1,5 +1,6 @@
 
 import { FileText } from "lucide-react";
+import { useEffect } from "react";
 
 const terms = [
   {
@@ -45,6 +46,10 @@ const terms = [
 ];
 
 export default function TermsOfService() {
+ useEffect(()=>{
+    window.scrollTo({top:'0px',behavior:'smooth'})
+  })
+
   return (
     <main className="min-h-screen bg-gray-50 px-5 py-14 sm:py-20">
       <article className="mx-auto max-w-4xl rounded-3xl border border-gray-100 bg-white p-6 shadow-sm sm:p-10 lg:p-14">

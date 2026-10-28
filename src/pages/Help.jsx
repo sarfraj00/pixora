@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   HelpCircle,
@@ -63,6 +63,11 @@ const categories = [
 ];
 
 export default function Help() {
+
+   useEffect(()=>{
+      window.scrollTo({top:'0px',behavior:'smooth'})
+    })
+
   const [search, setSearch] = useState("");
   const [openIndex, setOpenIndex] = useState(0);
 
