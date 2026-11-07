@@ -35,6 +35,10 @@ const UserProfile = () => {
     });
 
 
+    const handleSetFollowing = ()=>{
+        setCheckFollowing({...checkFollowing,checkYouFollowTheUser:!checkFollowing.checkYouFollowTheUser})
+    }
+
     useEffect(() => {
         (async () => {
             try {
@@ -168,7 +172,7 @@ const UserProfile = () => {
 
                 <div className="w-full px-4 pb-10 sm:px-6 lg:px-8 z-10 mb-10">
                     <div className="mx-auto w-full max-w-350 relative">
-                        <ProfileHeader user={userProfile} checkFollowing={checkFollowing} stats={followersAndfollowingStat} />
+                        <ProfileHeader user={userProfile} checkFollowing={checkFollowing} stats={followersAndfollowingStat} handleSetFollowing={handleSetFollowing}/>
 
 
                         <ProfilePosts posts={userPosts} />

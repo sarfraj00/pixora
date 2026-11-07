@@ -24,7 +24,7 @@ const PostActions = memo(({
   const dispatch = useDispatch();
   const user = useSelector(state => state.userData);
   const postLikedCount = post?.likes?.length;
-  let isLiked = post?.likes?.find(likedUser => likedUser === user?._id) ? true : false;
+  let isLiked = post?.likes?.includes(user?._id);
 
   const { onPostDelete, loading } = useDeletion()
   const [liked, setLiked] = useState({ isPostLiked: isLiked, postLikedCount });
@@ -35,9 +35,11 @@ const PostActions = memo(({
   const [commentsCount, setCommentsCount] = useState(0)
   const [saving, setSaving] = useState(false);
 
-  const [isSaved, setIsSaved] = useState(user?.profile?.saved?.find(savedPostId => savedPostId === post?._id) ? true : false)
+  const [isSaved, setIsSaved] = useState(user?.profile?.saved?.includes(post?._id));
 
   const [openMore, setOpenMore] = useState(false);
+
+  console.log(liked)
 
   useEffect(() => {
     (async () => {
@@ -53,16 +55,19 @@ const PostActions = memo(({
   }, [postComments])
 
   const handlePostLike = async (postId) => {
+
+    setLiked(state => !state.isPostLiked ? ({ isPostLiked: !state.isPostLiked, postLikedCount: state.postLikedCount + 1 }) : ({ isPostLiked: !state.isPostLiked, postLikedCount: state.postLikedCount - 1 }));
+
     try {
       const res = await api.patch('/post/like', { postId, userName: user?.userName, postCreatorId: post?.userId?._id || post?.userId });
       if (res.status === 201) {
-        toast.info(res.data.message)
 
-        setLiked(state => !state.isPostLiked ? ({ isPostLiked: !state.isPostLiked, postLikedCount: state.postLikedCount + 1 }) : ({ isPostLiked: !state.isPostLiked, postLikedCount: state.postLikedCount - 1 }));
       }
 
     }
     catch (err) {
+      setLiked(state => !state.isPostLiked ? ({ isPostLiked: !state.isPostLiked, postLikedCount: state.postLikedCount + 1 }) : ({ isPostLiked: !state.isPostLiked, postLikedCount: state.postLikedCount - 1 }));
+
       toast.error('something went wrong! please try again.');
     }
   }
@@ -91,15 +96,16 @@ const PostActions = memo(({
   }
 
   const handlePostSave = async () => {
+    setIsSaved(!isSaved);
     try {
       const res = await api.patch('/profile/saved', { id: user?._id, postId: post?._id });
       if (res.status === 201) {
-        setIsSaved(!isSaved);
         dispatch(setMadeSavedChanges())
 
       }
     }
     catch (err) {
+      setIsSaved(!isSaved);
       toast.error(err?.response?.data?.message || "something went wrong ! please try again")
 
     }
@@ -198,11 +204,11 @@ const PostActions = memo(({
         <X />
       </button>}
 
-      {openMore && <div className="rounded-md border border-[#f61b90] p-7 absolute bottom-10 -right-3 flex flex-col gap-4  text-white bg-[#ffe6f4] *:cursor-pointer">
-        <button className="border rounded-md p-2 border-[#fc88c6] bg-violet-500" onClick={async () => { await onPostDelete(post?._id); setOpenMore(false) }}>
+      {openMore && <div className="rounded-md border border-gray-500 p-7 absolute bottom-10 -right-3 flex flex-col gap-4  text-white bg-zinc-300 *:cursor-pointer">
+        <button className="border rounded-md p-2 text-base-500 bg-red-500 border-gray-200" onClick={async () => { await onPostDelete(post?._id); setOpenMore(false) }}>
           {loading ? "Deleting" : "Delete this post"}
         </button>
-        <button className="border rounded-md p-2 border-[#fc88c6] bg-[#F32FFF] flex justify-center items-center" onClick={async () => { setSaving(true); await handlePostSave() }}>{saving ? <Loader2 className="animate-spin text-center" /> : isSaved ? "Remove from saved" : "Add to saved"}</button>
+        <button className="border rounded-md p-2 border-gray-200 bg-zinc-400 flex justify-center items-center text-base-500" onClick={async () => { setSaving(true); await handlePostSave() }}>{saving ? <Loader2 className="animate-spin text-center" /> : isSaved ? "Remove from saved" : "Add to saved"}</button>
       </div>}
 
 

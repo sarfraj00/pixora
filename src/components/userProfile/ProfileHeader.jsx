@@ -10,7 +10,7 @@ import { FollowingList, FollowersList, UnfollowModel } from '../../custom_hook/f
 import { useSelector } from "react-redux";
 import { memo, useEffect } from "react";
 
-const ProfileHeader = memo(({ user, checkFollowing, stats, }) => {
+const ProfileHeader = memo(({ user, checkFollowing, stats, handleSetFollowing }) => {
 
   useEffect(() => {
     window.scrollTo({ behavior: 'smooth', top: "0px" })
@@ -30,7 +30,7 @@ const ProfileHeader = memo(({ user, checkFollowing, stats, }) => {
           alt="Cover"
           className="h-full w-full object-cover rounded-lg"
         />
-        
+
       </div>
 
       <div className="relative px-2 sm:px-6">
@@ -54,7 +54,13 @@ const ProfileHeader = memo(({ user, checkFollowing, stats, }) => {
           >
             <UserCheck size={16} />
             <span className=" ">Following</span>
-          </button> : <button onClick={async () => await handleFollow(yourProfileData?._id, user?._id, yourProfileData?.userName)} className="flex items-center gap-1  bg-zinc-300 text-black/50 font-medium px-2 py-0.5 rounded-sm">
+          </button> : <button onClick={async () => {
+            handleSetFollowing(); try {
+              await handleFollow(yourProfileData?._id, user?._id, yourProfileData?.userName);
+            } catch (err) {
+              handleSetFollowing();
+            }
+          }} className="flex items-center gap-1  bg-zinc-300 text-black/50 font-medium px-2 py-0.5 rounded-sm">
             {checkFollowing.checkUserFollowsYou ? "Follow back" : <span className="flex gap-1 items-center">
               <Plus size={14} className="inline" />
               Follow
@@ -110,7 +116,7 @@ const ProfileHeader = memo(({ user, checkFollowing, stats, }) => {
 
       </div>
 
-      {openUnfollowModel && <UnfollowModel userName={user?.userName} onClose={handleClose} yourId={yourProfileData?._id} userId={user?._id} />}
+      {openUnfollowModel && <UnfollowModel userName={user?.userName} onClose={handleClose} yourId={yourProfileData?._id} userId={user?._id} handleSetFollowing={handleSetFollowing}/>}
 
       {openSeeFollowers && <FollowersList followers={stats.followers} onBack={handleCloseSeeFollowers} who={"followerId"} isOpened={openUnfollowModel} openUnfollowModel={handleOpen} closeUnfollowModel={handleClose} />}
 

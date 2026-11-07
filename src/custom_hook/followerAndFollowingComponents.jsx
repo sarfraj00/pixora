@@ -12,7 +12,7 @@ import { api } from "../config/axios.js"
 import { useSelector } from "react-redux";
 import { useFollowerAndFollowing } from "./followerAndFollowing.js";
 
-export const UnfollowModel = memo(({ onClose, userName, yourId = null, userId = null }) => {
+export const UnfollowModel = memo(({ onClose, userName, yourId = null, userId = null, handleSetFollowing }) => {
 
     const { handleUnfollow } = useFollowerAndFollowing()
 
@@ -73,10 +73,11 @@ export const UnfollowModel = memo(({ onClose, userName, yourId = null, userId = 
                         type="button"
                         onClick={async () => {
                             setLoading(true);
+                            handleSetFollowing();
                             try {
                                 await handleUnfollow(yourId, userId);
                             }
-                            catch (err) { }
+                            catch (err) { handleSetFollowing(); }
                             finally { setLoading(false); onClose() }
                         }}
                         disabled={loading}
@@ -100,11 +101,17 @@ export const UnfollowModel = memo(({ onClose, userName, yourId = null, userId = 
 })
 
 
-export const CheckingUser = memo(({ user = {}, who, onOpen, }) => {
+export const CheckingUser = memo(({ user = {}, who, onOpen, isOpened, detail, onClose }) => {
 
     const statsChanges = useSelector(state => state.statsChanges);
 
     const [checkFollowing, setCheckFollowing] = useState({ checkYouFollowTheUser: false, checkUserFollowsYou: false, });
+
+    const handleSetFollowing = () => {
+        setCheckFollowing({ ...checkFollowing, checkYouFollowTheUser: !checkFollowing.checkYouFollowTheUser })
+    }
+
+
     const yourAccount = useSelector(state => state.userData);
     const checkItsYourAccount = yourAccount._id === user[who]?._id;
     const [loader, setLoader] = useState(true);
@@ -132,6 +139,11 @@ export const CheckingUser = memo(({ user = {}, who, onOpen, }) => {
             }
         })()
     }, [statsChanges])
+
+    if (isOpened) {
+        return (<UnfollowModel onClose={onClose ?? undefined}
+            userId={detail?.userId} userName={detail?.userName} yourId={detail?.yourId} handleSetFollowing={handleSetFollowing} />)
+    }
 
     return (
         <article
@@ -180,7 +192,11 @@ export const CheckingUser = memo(({ user = {}, who, onOpen, }) => {
                     <span className="hidden sm:inline">Following</span>
                 </button>
             ) : (
-                <button className="flex items-center gap-1 bg-zinc-300 text-black/50 font-medium px-2 py-0.5 rounded-sm" onClick={() => handleFollow(yourAccount._id, user[who]?._id, yourAccount?.userName)}>
+                <button className="flex items-center gap-1 bg-zinc-300 text-black/50 font-medium px-2 py-0.5 rounded-sm" onClick={async () => {
+                    handleSetFollowing(); try { handleFollow(yourAccount._id, user[who]?._id, yourAccount?.userName); } catch (err) {
+                        handleSetFollowing();
+                    }
+                }}>
                     {checkFollowing.checkUserFollowsYou ? "Follow back" : <span className="flex gap-1 items-center">
                         <Plus size={14} className="inline" />
                         Follow
@@ -283,16 +299,13 @@ export const FollowingList = memo(({
                     ) : (
                         <div className="flex flex-col gap-1 ">
                             {filteredUsers.map((user) => (
-                                <CheckingUser user={user} key={user._id} who={'followingId'} onBack={onBack} onOpen={openModelWithData} onClose={closeUnfollowModel} />
+                                <CheckingUser user={user} key={user._id} who={'followingId'} onBack={onBack} onOpen={openModelWithData} onClose={closeUnfollowModel} isOpened={isOpened} detail={detail} />
                             ))}
 
                         </div>
                     )}
                 </div>
             </section>
-
-            {isOpened && <UnfollowModel onClose={closeUnfollowModel}
-                userId={detail?.userId} userName={detail?.userName} yourId={detail?.yourId} />}
 
         </main>
     );
@@ -394,15 +407,12 @@ export const FollowersList = memo(({
                     ) : (
                         <div className="flex flex-col gap-1 ">
                             {filteredUsers.map((user) => (
-                                <CheckingUser user={user} key={user._id} who={'followerId'} onBack={onBack} onOpen={openModelWithData} onClose={closeUnfollowModel} />
+                                <CheckingUser user={user} key={user._id} who={'followerId'} onBack={onBack} onOpen={openModelWithData} onClose={closeUnfollowModel} isOpened={isOpened} detail={detail}/>
                             ))}
                         </div>
                     )}
                 </div>
             </section>
-
-            {isOpened && <UnfollowModel onClose={closeUnfollowModel}
-                userId={detail.userId} userName={detail.userName} yourId={detail.yourId} />}
 
         </main>
     );
