@@ -39,7 +39,6 @@ const PostActions = memo(({
 
   const [openMore, setOpenMore] = useState(false);
 
-  console.log(liked)
 
   useEffect(() => {
     (async () => {
